@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>The Examined Year — A Self-Directed Course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light dark;
+    --paper:#ECEAE0;
+    --paper-2:#E4E1D4;
+    --card:#F4F2EA;
+    --ink:#20211E;
+    --wine:#A02E2C;         /* primary accent — dark red, higher visibility */
+    --wine-deep:#7C1F1E;
+    --brass:#A97B34;
+    --brass-deep:#8A6224;
+    --muted:#6E685C;
+    --line:#CDC8B8;
+    --line-soft:#DAD5C6;
+    --neutral:#9A9384;
+    --cap-top:#F4F2EA; --cap-bot:#EFECE0; --stamp-bg:rgba(160,46,44,0.05);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#181510;      /* warm near-black ground */
+      --paper-2:#221E17;
+      --card:#211C15;       /* lifted warm-dark cards */
+      --ink:#ECE6D8;        /* warm off-white text */
+      --wine:#E07668;       /* red, brightened so it reads on dark */
+      --wine-deep:#EC8C7F;
+      --brass:#CDA457;
+      --brass-deep:#CBA45C;
+      --muted:#A79E8D;
+      --line:#39332A;
+      --line-soft:#2B2620;
+      --neutral:#6E6656;
+      --cap-top:#221E17; --cap-bot:#1C1811; --stamp-bg:rgba(224,118,104,0.08);
+    }
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:radial-gradient(circle at 12% 8%, rgba(160,46,44,0.04), transparent 42%),
+                     radial-gradient(circle at 88% 94%, rgba(169,123,52,0.05), transparent 46%);
+    color:var(--ink);
+    font-family:"Newsreader",Georgia,serif;
+    font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 120px;}
+
+  /* ---- Header ---- */
+  header{padding:64px 0 30px;}
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:0.26em;
+    text-transform:uppercase;color:var(--brass-deep);margin:0 0 22px;
+  }
+  h1.title{
+    font-family:"Fraunces",serif;font-weight:600;font-size:clamp(42px,10vw,68px);
+    line-height:0.98;letter-spacing:-0.02em;margin:0;color:var(--ink);
+  }
+  h1.title em{font-style:italic;color:var(--wine);}
+  .lede{font-size:19px;color:var(--muted);max-width:52ch;margin:22px 0 0;line-height:1.55;}
+  .lede strong{color:var(--ink);font-weight:500;font-style:italic;}
+
+  /* ---- Progress spine ---- */
+  .spine{margin:38px 0 0;padding:20px 22px;border:1px solid var(--line);border-radius:3px;background:var(--card);}
+  .spine-head{
+    display:flex;justify-content:space-between;align-items:baseline;
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:0.2em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:14px;
+  }
+  .spine-head b{color:var(--wine);font-weight:500;}
+  .marks{display:flex;gap:7px;align-items:flex-end;height:34px;}
+  .mark{
+    flex:1;height:12px;border:1px solid var(--neutral);border-radius:1px;background:transparent;
+    transition:height .5s cubic-bezier(.2,.8,.2,1),background .4s,border-color .4s;
+  }
+  .mark.done{height:30px;background:var(--wine);border-color:var(--wine);}
+  .mark.essay{border-color:var(--brass);border-style:dashed;}
+  .mark.essay.done{background:var(--brass);border-color:var(--brass);border-style:solid;}
+  .bar-track{margin-top:16px;height:3px;background:var(--line);position:relative;overflow:hidden;border-radius:2px;}
+  .bar-fill{position:absolute;inset:0 auto 0 0;width:0;background:var(--brass);transition:width .6s cubic-bezier(.2,.8,.2,1);}
+
+  .howto{margin:34px 0 10px;font-size:16px;color:var(--muted);border-left:2px solid var(--wine);padding:2px 0 2px 20px;line-height:1.6;}
+  .howto b{color:var(--ink);font-weight:500;}
+
+  /* ---- Module cards ---- */
+  .module{border:1px solid var(--line);border-radius:3px;background:var(--card);margin:18px 0;overflow:hidden;position:relative;}
+  .m-head{width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:24px 26px;display:block;color:inherit;font-family:inherit;position:relative;}
+  .m-head:focus-visible{outline:2px solid var(--wine);outline-offset:-2px;}
+  .m-code{
+    font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:0.22em;text-transform:uppercase;
+    color:var(--brass-deep);display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap;
+  }
+  .m-disc{color:var(--muted);}
+  .m-dot{width:3px;height:3px;border-radius:50%;background:var(--line);}
+  .m-title{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(24px,5.4vw,31px);line-height:1.08;margin:0 0 12px;color:var(--ink);letter-spacing:-0.01em;padding-right:34px;}
+  .m-q{font-style:italic;color:var(--wine);font-size:18px;line-height:1.45;margin:0;max-width:52ch;}
+  .m-count{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:0.14em;color:var(--muted);margin-top:14px;text-transform:uppercase;}
+  .chev{position:absolute;top:26px;right:24px;width:11px;height:11px;border-right:1.5px solid var(--neutral);border-bottom:1.5px solid var(--neutral);transform:rotate(45deg);transition:transform .35s ease;}
+  .module.open .chev{transform:rotate(-135deg);}
+
+  .m-body{max-height:0;overflow:hidden;transition:max-height .45s ease;border-top:1px solid transparent;}
+  .module.open .m-body{border-top-color:var(--line-soft);}
+  .m-body-inner{padding:8px 26px 28px;}
+
+  .sec-label{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:0.24em;text-transform:uppercase;color:var(--brass-deep);margin:22px 0 6px;}
+  .sec-hint{font-size:14px;color:var(--muted);font-style:italic;margin:0 0 8px;}
+
+  /* reading block */
+  .reading{padding:16px 0;border-bottom:1px solid var(--line-soft);}
+  .reading:last-child{border-bottom:none;}
+  .r-line{display:flex;justify-content:space-between;align-items:baseline;gap:12px;}
+  .r-title{font-size:17.5px;line-height:1.4;}
+  .r-who{font-weight:600;color:var(--ink);}
+  .r-what{color:var(--ink);font-style:italic;}
+  .r-prog{flex:none;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:0.1em;color:var(--muted);white-space:nowrap;}
+  .r-prog.full{color:var(--wine);}
+  .r-why{font-size:14.5px;color:var(--muted);margin:4px 0 12px;line-height:1.5;}
+
+  /* segments (the tickable parts) */
+  .segs{margin-left:2px;border-left:1px solid var(--line-soft);padding-left:14px;}
+  .seg{display:flex;gap:12px;align-items:flex-start;padding:9px 0;cursor:pointer;}
+  .tick{flex:none;width:20px;height:20px;border:1.5px solid var(--neutral);border-radius:2px;margin-top:2px;position:relative;transition:all .18s;background:transparent;}
+  .seg[aria-checked="true"] .tick{background:var(--wine);border-color:var(--wine);}
+  .tick::after{content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;border-right:2px solid var(--card);border-bottom:2px solid var(--card);transform:rotate(45deg) scale(0);transition:transform .16s ease;}
+  .seg[aria-checked="true"] .tick::after{transform:rotate(45deg) scale(1);}
+  .seg-text{flex:1;font-size:16px;line-height:1.5;}
+  .seg-name{font-weight:600;color:var(--ink);}
+  .seg-take{color:var(--muted);}
+  .seg[aria-checked="true"] .seg-name{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line);}
+  .seg[aria-checked="true"] .seg-take{color:var(--neutral);}
+  .seg:focus-visible{outline:2px solid var(--wine);outline-offset:3px;border-radius:2px;}
+
+  ul.hold{list-style:none;padding:0;margin:0;}
+  ul.hold li{position:relative;padding:7px 0 7px 26px;color:var(--ink);font-size:16.5px;line-height:1.5;}
+  ul.hold li::before{content:"—";position:absolute;left:0;color:var(--wine);font-family:"IBM Plex Mono",monospace;}
+
+  .essay-seed{margin-top:22px;padding:16px 18px;background:var(--paper-2);border-radius:3px;border:1px solid var(--line-soft);}
+  .essay-seed .sec-label{margin-top:0;}
+  .essay-seed p{margin:0;font-style:italic;color:var(--ink);font-size:16.5px;line-height:1.5;}
+
+  .m-note{font-size:14px;color:var(--muted);font-style:italic;margin:14px 0 0;padding:10px 14px;background:var(--paper-2);border-radius:3px;}
+
+  /* completed stamp */
+  .stamp{
+    position:absolute;top:20px;right:56px;font-family:"IBM Plex Mono",monospace;font-size:12px;
+    letter-spacing:0.14em;color:var(--wine);border:2px solid var(--wine);border-radius:3px;padding:5px 9px;
+    text-transform:uppercase;transform:rotate(-7deg);opacity:0;pointer-events:none;
+    transition:opacity .4s ease;background:var(--stamp-bg);line-height:1;
+  }
+  .module.complete .stamp{opacity:0.85;}
+  @media(max-width:520px){.stamp{top:auto;bottom:18px;right:20px;}}
+
+  /* ---- Capstone ---- */
+  .capstone{margin:44px 0 0;border:1.5px solid var(--wine);border-radius:3px;background:linear-gradient(180deg,var(--cap-top),var(--cap-bot));padding:32px 28px;position:relative;}
+  .capstone .m-code{color:var(--wine);}
+  .capstone h2{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(28px,6vw,38px);margin:10px 0 8px;line-height:1.02;letter-spacing:-0.01em;}
+  .capstone .m-q{color:var(--brass-deep);margin-bottom:20px;}
+  .step{padding:16px 0;border-bottom:1px solid var(--line-soft);}
+  .step:last-child{border-bottom:none;}
+  .step h3{font-family:"Fraunces",serif;font-weight:500;font-size:20px;margin:0 0 5px;color:var(--wine);}
+  .step p{margin:0;font-size:16.5px;color:var(--ink);line-height:1.55;}
+  .step p a{color:var(--wine-deep);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:2px;}
+  .step .src{font-size:15px;color:var(--muted);}
+
+  footer{margin-top:54px;text-align:center;}
+  .reset{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--line);padding:9px 16px;border-radius:3px;cursor:pointer;transition:all .2s;}
+  .reset:hover{border-color:var(--wine);color:var(--wine);}
+  .reset:focus-visible{outline:2px solid var(--wine);outline-offset:2px;}
+  .foot-note{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted);margin-top:20px;letter-spacing:0.04em;}
+  .save-flash{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--wine);opacity:0;transition:opacity .3s;margin-top:10px;height:12px;}
+  .save-flash.show{opacity:1;}
+
+  @media (prefers-reduced-motion: reduce){*{transition:none !important;scroll-behavior:auto !important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">A self-directed course · History · Philosophy · Classics · Literature</p>
+    <h1 class="title">The <em>Examined</em> Year</h1>
+    <p class="lede">Seven modules and one essay, built as a single conversation across twenty-five centuries — about freedom, meaning, power, the self, and catastrophe. Made to be read <strong>slowly, on purpose</strong>, instead of scrolled.</p>
+
+    <div class="spine" aria-hidden="true">
+      <div class="spine-head"><span>Reading progress</span><b><span id="doneCount">0</span> / 8 modules</b></div>
+      <div class="marks" id="marks"></div>
+      <div class="bar-track"><div class="bar-fill" id="barFill"></div></div>
+    </div>
+
+    <p class="howto">
+      Work the modules in order, or jump to whatever's pulling at you — the arc is designed, not a cage. Read the <b>primary texts first</b>; save criticism until you've formed your own view. Every book is broken into parts — <b>tick each one as you finish it</b>, and your progress saves on this device. Small wins on purpose. Finishing fast isn't the point; <b>Module VIII is.</b>
+    </p>
+  </header>
+
+  <main id="modules"></main>
+
+  <section class="capstone" id="capstone">
+    <p class="m-code">Essay · VIII &nbsp;<span class="m-dot"></span>&nbsp; <span class="m-disc">The whole point</span></p>
+    <h2>Write the essay.</h2>
+    <p class="m-q">A course you only consume is entertainment. A course you answer back to is an education.</p>
+
+    <div class="step"><h3>1 · Find the question, not the topic</h3><p>"Stoicism" is a topic. "Is Stoic acceptance compatible with fighting injustice?" is a question — you can argue it, and you can be wrong. The essay seeds in each module are starting points, but the best question is the one that started nagging you mid-read. Write it as a single sentence with a question mark.</p></div>
+    <div class="step"><h3>2 · Take a side</h3><p>An essay isn't a survey of what everyone has thought. It's you committing to an answer and defending it against the strongest objection you can build against yourself. If you can't lose the argument, you're not making one.</p></div>
+    <div class="step"><h3>3 · Get the sources (no university login needed)</h3><p class="src">The <a href="https://plato.stanford.edu" target="_blank" rel="noopener">Stanford Encyclopedia of Philosophy</a> — free and genuinely rigorous. <a href="https://www.gutenberg.org" target="_blank" rel="noopener">Project Gutenberg</a> and the <a href="https://archive.org" target="_blank" rel="noopener">Internet Archive</a> for primary texts. <a href="https://scholar.google.com" target="_blank" rel="noopener">Google Scholar</a> and JSTOR's free tier. And your public library card — most give free remote access to JSTOR and academic databases from home.</p></div>
+    <div class="step"><h3>4 · A structure that holds</h3><p>The question, and why it matters → your answer in one sentence → the argument in stages → the strongest counter-argument, taken seriously → a conclusion that's earned rather than restated. Every good essay is a version of this.</p></div>
+    <div class="step"><h3>5 · Finish something</h3><p>3,000–5,000 words is a real essay. But 1,500 that actually argue beats 5,000 that wander. Done and imperfect beats endless and unwritten — especially for a brain that likes a finish line.</p></div>
+    <div class="step"><h3>6 · Find one honest reader</h3><p>The single thing university gave that solo study lacks is someone who pushes back. Hand the finished essay to one person who'll be honest — a friend, a forum, a small publication, or me. That's where the value doubles.</p></div>
+  </section>
+
+  <footer>
+    <button class="reset" id="resetBtn">Reset progress</button>
+    <div class="save-flash" id="saveFlash">Saved</div>
+    <p class="foot-note">Non ferro sed scientia.</p>
+  </footer>
+
+</div>
+
+<script>
+const MODULES = [
+  {
+    code:"Hst · I", disc:"History / Historiography",
+    title:"What Is History?",
+    q:"Is the past something we find, or something we make?",
+    readings:[
+      {who:"Herodotus,", what:"Histories — Book I (Croesus & Solon)",
+        why:"The first history book ever written: part inquiry, part travelogue, part gossip.",
+        segs:[
+          {name:"The proem", take:"He writes so great deeds won't be forgotten — history begins as a fight against forgetting."},
+          {name:"Croesus & Solon", take:"The richest king asks who is happiest; Solon says: call no one happy until they're dead."},
+          {name:"The fall of Croesus", take:"He misreads the oracle and loses everything — certainty about the future is the trap that ruins the powerful."}
+        ]},
+      {who:"Thucydides,", what:"the Melian Dialogue (Peloponnesian War, Bk V)",
+        why:"The coldest page in ancient literature.",
+        segs:[
+          {name:"The Athenians' offer", take:"Submit or be destroyed; justice only exists between equals. Power sets the terms."},
+          {name:"Melos refuses", take:"They gamble on hope, honour and the gods — and are annihilated. Hope is what's left when nothing else is, and it isn't enough."}
+        ]},
+      {who:"E. H. Carr,", what:"What Is History? — ch. 1",
+        why:"The book that ruined the idea of the neutral fact.",
+        segs:[
+          {name:"The fetish of facts", take:"A 'fact of history' only becomes one when a historian chooses it. There are no raw facts, only selected ones."},
+          {name:"Study the historian first", take:"Before you trust a history, look at who wrote it and why — every account is also evidence about its author."}
+        ]}
+    ],
+    hold:[
+      "When Herodotus reports a story he clearly doesn't believe, why keep it in?",
+      "Is Thucydides more objective than Herodotus — or just colder?",
+      "Carr says someone always chooses which facts get to speak. Who chose, in the last history you read?"
+    ],
+    essay:"“History is written by the victors.” True, useful, or lazy? Argue it out."
+  },
+  {
+    code:"Phl · II", disc:"Ancient philosophy & ethics",
+    title:"The Examined Life",
+    q:"What does it mean to live well — and is being good enough on its own?",
+    readings:[
+      {who:"Plato,", what:"Apology & Crito",
+        why:"Socrates defends his life, then refuses to flee his death.",
+        segs:[
+          {name:"Apology — the defence", take:"He won't grovel: the unexamined life is not worth living. He'd rather die honest than live pretending."},
+          {name:"Apology — the sentence", take:"Condemned, he discusses death calmly. A philosophy is only worth what it's worth at the worst moment."},
+          {name:"Crito — why he stays", take:"Offered escape, he argues he owes obedience to the laws that raised him. Principle — or a trap he built himself?"}
+        ]},
+      {who:"Aristotle,", what:"Nicomachean Ethics — Books I–II",
+        why:"Slow, but foundational.",
+        segs:[
+          {name:"Book I — the good & happiness", take:"The highest aim is eudaimonia — flourishing. Happiness isn't a feeling, it's a whole life done well."},
+          {name:"Book II — virtue as habit", take:"We become just by doing just acts; virtue is a mean between extremes. Character is built by repetition, not intention."}
+        ]},
+      {who:"Epictetus,", what:"Enchiridion",
+        why:"The whole of Stoicism in a pocket manual.",
+        segs:[
+          {name:"What is up to us", take:"Judgments are ours; bodies, reputation and events aren't. Nearly all suffering comes from wanting to control what you can't."},
+          {name:"Living it out", take:"Expect loss, stop performing for others, play your role well. Freedom is wanting only what's actually yours."}
+        ]}
+    ],
+    hold:[
+      "Would you have drunk the hemlock? Be honest about why, or why not.",
+      "Aristotle's eudaimonia — is it the same thing you mean by “happiness”?",
+      "Is Stoic acceptance wisdom, or a way of never demanding anything better?"
+    ],
+    essay:"Is the Stoic ideal of self-sufficiency a kind of courage, or a kind of surrender?"
+  },
+  {
+    code:"Cls · III", disc:"Classics / Greek drama",
+    title:"Fate and the Tragic",
+    q:"Why do we find meaning in watching people be destroyed?",
+    readings:[
+      {who:"Sophocles,", what:"Oedipus the King & Antigone",
+        why:"The two poles of Greek tragedy.",
+        segs:[
+          {name:"Oedipus — the investigation", take:"He hunts the plague's cause, not knowing he hunts himself. The detective and the criminal are one man."},
+          {name:"Oedipus — the recognition", take:"The truth lands and he blinds himself. Seeing clearly and being destroyed arrive together."},
+          {name:"Antigone — the two laws", take:"Divine duty vs the state. Not right vs wrong — right vs right."},
+          {name:"Antigone — the cost", take:"Everyone Creon loves dies; he's left alive to know it. Being technically correct can still ruin everything."}
+        ]},
+      {who:"Aeschylus,", what:"The Oresteia",
+        why:"Justice evolving across three plays.",
+        segs:[
+          {name:"Agamemnon", take:"The king comes home and is murdered by his wife for sacrificing their daughter. Every act of justice is also a fresh crime."},
+          {name:"The Libation Bearers", take:"The son avenges the father by killing the mother. Vengeance can't stop itself; it only changes targets."},
+          {name:"The Eumenides", take:"The cycle ends when a jury, not a killer, decides. Civilisation is the moment we hand vengeance to a court."}
+        ]},
+      {who:"Nietzsche,", what:"The Birth of Tragedy (selections)",
+        why:"Why the happiest people made the saddest art.",
+        segs:[
+          {name:"Apollo & Dionysus", take:"Order and form vs ecstasy and chaos; great art needs both fused, not resolved."},
+          {name:"Why tragedy consoles", take:"It lets us look at the abyss and still say yes to life. The Greeks made sad art because they loved life too much to lie."}
+        ]}
+    ],
+    hold:[
+      "Is Oedipus guilty of anything, given that he didn't know?",
+      "Antigone or Creon — notice which you defend, and what that says about you.",
+      "The Oresteia ends by inventing the law court. Triumph, or loss?"
+    ],
+    essay:"“Antigone and Creon are both right.” Discuss — and don't let yourself off with “it's complicated.”"
+  },
+  {
+    code:"Phl · IV", disc:"Political philosophy",
+    title:"Power and the Individual",
+    q:"What do I owe the state, and when may I refuse it?",
+    readings:[
+      {who:"Machiavelli,", what:"The Prince",
+        why:"Politics split from morality, with no apology.",
+        segs:[
+          {name:"Taking & holding power", take:"States, arms, fortune, treated as engineering rather than ethics."},
+          {name:"Feared vs loved; lion & fox", take:"Better feared than loved if you can't be both; a ruler must know when to break his word. The virtues of a good person can destroy a ruler."}
+        ]},
+      {who:"Hobbes,", what:"Leviathan — chs. 13–18",
+        why:"The modern state, born in six chapters.",
+        segs:[
+          {name:"The state of nature (13)", take:"Without a common power, life is war of all against all — nasty, brutish, short. Our worst fear of each other founds everything."},
+          {name:"Laws of nature & the covenant (14–15)", take:"Reason says seek peace and surrender some freedom. Rights are traded, not given."},
+          {name:"The sovereign (16–18)", take:"We authorise one near-absolute power to hold us together. The cure for chaos looks a lot like tyranny — that's the bargain."}
+        ]},
+      {who:"J. S. Mill,", what:"On Liberty — chs. 1–2",
+        why:"The strongest defence of your right to be wrong.",
+        segs:[
+          {name:"The harm principle (1)", take:"Power over you is only justified to prevent harm to others. Your life is yours to run, even badly."},
+          {name:"Freedom of thought (2)", take:"Even a true opinion rots into dead dogma if never challenged. We need dissent even when we're right."}
+        ]}
+    ],
+    hold:[
+      "Is Machiavelli describing how power works, or teaching people to be worse?",
+      "Hobbes thinks we're dangerous and need a strong ruler. Does the 20th century prove him right, or wrong?",
+      "Mill's harm principle sounds simple until you test it. Where does it break?"
+    ],
+    essay:"“Better to be feared than loved.” Was Machiavelli diagnosing politics, or corrupting it?"
+  },
+  {
+    code:"Lit · V", disc:"Literature / the novel",
+    title:"The Invention of the Inner Life",
+    q:"How did fiction learn to render consciousness — and what did that do to its readers?",
+    note:"You've already read Tolstoy and Dostoevsky, so this module deliberately goes elsewhere.",
+    readings:[
+      {who:"Flaubert,", what:"Madame Bovary",
+        why:"Free indirect style, perfected. Take it a part at a time.",
+        segs:[
+          {name:"Part I — the marriage", take:"Emma's romantic dreams meet dull provincial marriage. Watch him make you feel her boredom without ever saying “she was bored.”"},
+          {name:"Part II — the affairs", take:"She reaches for passion and status; debts and lovers pile up. He never condemns her — the style lets her damn herself."},
+          {name:"Part III — the reckoning", take:"The illusions and the debts collapse together. The tragedy is ordinary, which is what makes it devastating."}
+        ]},
+      {who:"Chekhov,", what:"“The Lady with the Dog” & “Gooseberries”",
+        why:"A whole novel's worth, in fifteen pages — twice.",
+        segs:[
+          {name:"The Lady with the Dog", take:"A cynical affair becomes real love with no possible resolution. He ends exactly where life would: unresolved."},
+          {name:"Gooseberries", take:"A man gets his small dream and shrinks into smugness. Chekhov distrusts any happiness that requires not looking at others' pain."}
+        ]},
+      {who:"Virginia Woolf,", what:"To the Lighthouse",
+        why:"The whole novel, moved inside the mind.",
+        segs:[
+          {name:"The Window", take:"One afternoon, many minds; the trip is promised then denied. The “plot” is what everyone privately thinks while nothing happens."},
+          {name:"Time Passes", take:"Years and deaths flash by through an empty house. Woolf hands the biggest events to time itself, almost in passing."},
+          {name:"The Lighthouse", take:"The delayed trip finally happens; a painting is finished. Meaning arrives from completion, not from events."}
+        ]}
+    ],
+    hold:[
+      "Flaubert never tells you to disapprove of Emma. So how does he make you?",
+      "Chekhov refuses to resolve his stories. Why does that feel truer than an ending would?",
+      "In Woolf, almost nothing “happens.” What is the plot actually made of?"
+    ],
+    essay:"The realist novel taught readers to sympathise with people they'd have condemned in life. How — and is it a moral gift, or a trick?"
+  },
+  {
+    code:"Hst · VI", disc:"History & moral philosophy",
+    title:"Ordinary Men, Monstrous Things",
+    q:"How do ordinary people come to take part in atrocity?",
+    note:"This is the heavy one. Read it slowly, and give it room. A part at a time is more than fine here.",
+    readings:[
+      {who:"Hannah Arendt,", what:"Eichmann in Jerusalem (selections)",
+        why:"The most misunderstood phrase of the century.",
+        segs:[
+          {name:"The man in the glass booth", take:"Eichmann isn't a fanatical monster but a careerist cliché-machine. The shock is how unremarkable he is."},
+          {name:"The banality of evil", take:"The evil here is thoughtlessness, not demonic will — a failure to think, not a surplus of hate."},
+          {name:"The controversial part", take:"Her hardest claim, about cooperation and the councils. Notice your own resistance here, and ask why."}
+        ]},
+      {who:"Primo Levi,", what:"If This Is a Man & “The Grey Zone”",
+        why:"The clearest, least sentimental witness we have.",
+        segs:[
+          {name:"Arrival & the drowning", take:"The camp destroys the person before the body. The first crime is turning a person into a thing."},
+          {name:"The grey zone", take:"Prisoners forced into complicity to survive. The line between victim and collaborator is blurred on purpose."}
+        ]},
+      {who:"Christopher Browning,", what:"Ordinary Men (selections)",
+        why:"The answer is worse than “they were monsters.”",
+        segs:[
+          {name:"The battalion & the first massacre", take:"Ordinary middle-aged men, offered the chance to opt out, mostly don't."},
+          {name:"Why they did it", take:"Authority, peer pressure, not wanting to seem weak — did more than ideology. The terror is how ordinary the cause is."}
+        ]}
+    ],
+    hold:[
+      "Does “the banality of evil” explain these men, or quietly excuse them?",
+      "Levi refuses to judge the prisoners in the grey zone. Should he?",
+      "The frightening one: are you actually sure you would have refused?"
+    ],
+    essay:"Is “I was following orders” ever a morally relevant fact — even when it's never a complete defence?"
+  },
+  {
+    code:"Phl · VII", disc:"Philosophy & literature",
+    title:"Meaning, Faith, and the Bargain",
+    q:"Can a life have meaning without God — and what would you trade for it?",
+    readings:[
+      {who:"Goethe,", what:"Faust, Part One",
+        why:"The oldest bargain in the West, in its greatest telling.",
+        segs:[
+          {name:"The wager", take:"Sick of knowledge, Faust bets his soul on never being satisfied. His damnation isn't lust — it's the refusal to ever rest."},
+          {name:"Gretchen", take:"His striving destroys an innocent woman. The great man's hunger has a body count, and she's it."},
+          {name:"The tragedy of Gretchen", take:"Her ruin, and her strange grace at the end. Goethe puts the real moral weight on the one Faust used."}
+        ]},
+      {who:"Dostoevsky,", what:"“The Grand Inquisitor” (Bros Karamazov, Bk V)",
+        why:"Reads perfectly as a standalone.",
+        segs:[
+          {name:"Christ returns; the arrest", take:"The Inquisitor jails Christ for giving people freedom — which he says is too heavy for them to bear."},
+          {name:"The three temptations", take:"Bread, mystery, authority: the Church gave people what Christ refused to. He calls cruelty mercy — and he's almost convincing."}
+        ]},
+      {who:"Camus,", what:"The Myth of Sisyphus",
+        why:"Why not give up? He spends the whole essay refusing to.",
+        segs:[
+          {name:"The absurd & suicide", take:"The one serious question: given no meaning, why live? Camus refuses both suicide and false hope."},
+          {name:"Sisyphus happy", take:"Owning your futile task is the revolt that makes it yours. Meaning is made by refusing to look away."}
+        ]}
+    ],
+    hold:[
+      "Is Faust redeemed because he never stops striving — or damned for what his striving does to Gretchen?",
+      "The Grand Inquisitor might be the villain. He might also be right. Which?",
+      "Camus insists Sisyphus is happy. Do you believe him, or is it a brave bluff?"
+    ],
+    essay:"The Grand Inquisitor says people will always trade freedom for bread and certainty. Point to where he's wrong — if you can."
+  }
+];
+
+const $ = s => document.querySelector(s);
+let state = {};
+let loaded = false;
+
+function segTotal(mi){ return MODULES[mi].readings.reduce((a,r)=>a+r.segs.length,0); }
+function segDone(mi){
+  let n=0;
+  MODULES[mi].readings.forEach((r,ri)=>r.segs.forEach((_,si)=>{ if(state[mi+"-"+ri+"-"+si]) n++; }));
+  return n;
+}
+function readingDone(mi,ri){ return MODULES[mi].readings[ri].segs.every((_,si)=>state[mi+"-"+ri+"-"+si]); }
+function readingCount(mi,ri){ return MODULES[mi].readings[ri].segs.filter((_,si)=>state[mi+"-"+ri+"-"+si]).length; }
+function moduleDone(mi){ return segDone(mi)===segTotal(mi); }
+
+function render(){
+  const marks=$("#marks"); marks.innerHTML="";
+  for(let i=0;i<8;i++){const d=document.createElement("div");d.className="mark"+(i===7?" essay":"");d.id="mark-"+i;marks.appendChild(d);}
+
+  const host=$("#modules"); host.innerHTML="";
+  MODULES.forEach((m,mi)=>{
+    const el=document.createElement("section");
+    el.className="module"; el.id="mod-"+mi;
+    el.innerHTML=`
+      <div class="stamp">Completed</div>
+      <button class="m-head" aria-expanded="false" aria-controls="body-${mi}">
+        <div class="m-code"><span>${m.code}</span><span class="m-dot"></span><span class="m-disc">${m.disc}</span></div>
+        <h2 class="m-title">${m.title}</h2>
+        <p class="m-q">${m.q}</p>
+        <div class="m-count" id="count-${mi}">0 / ${segTotal(mi)} parts read</div>
+        <span class="chev"></span>
+      </button>
+      <div class="m-body" id="body-${mi}"><div class="m-body-inner">
+        ${m.note?`<p class="m-note">${m.note}</p>`:""}
+        <div class="sec-label">Read</div>
+        <p class="sec-hint">Tick each part as you finish it.</p>
+        ${m.readings.map((r,ri)=>`
+          <div class="reading">
+            <div class="r-line">
+              <span class="r-title"><span class="r-who">${r.who}</span> <span class="r-what">${r.what}</span></span>
+              <span class="r-prog" id="rprog-${mi}-${ri}">0/${r.segs.length}</span>
+            </div>
+            <div class="r-why">${r.why}</div>
+            <div class="segs">
+              ${r.segs.map((s,si)=>`
+                <div class="seg" role="checkbox" tabindex="0" aria-checked="false" data-key="${mi}-${ri}-${si}">
+                  <span class="tick"></span>
+                  <span class="seg-text"><span class="seg-name">${s.name}</span> — <span class="seg-take">${s.take}</span></span>
+                </div>`).join("")}
+            </div>
+          </div>`).join("")}
+        <div class="sec-label">Hold these while you read</div>
+        <ul class="hold">${m.hold.map(h=>`<li>${h}</li>`).join("")}</ul>
+        <div class="essay-seed"><div class="sec-label">Essay seed</div><p>${m.essay}</p></div>
+      </div></div>`;
+    host.appendChild(el);
+  });
+
+  document.querySelectorAll(".m-head").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const mod=btn.closest(".module"), body=mod.querySelector(".m-body");
+      const open=mod.classList.toggle("open");
+      btn.setAttribute("aria-expanded",open);
+      body.style.maxHeight = open ? body.scrollHeight+"px" : "0";
+    });
+  });
+
+  document.querySelectorAll(".seg").forEach(seg=>{
+    const toggle=()=>{
+      const key=seg.dataset.key;
+      if(state[key]) delete state[key]; else state[key]=true;
+      seg.setAttribute("aria-checked", state[key]?"true":"false");
+      refresh(); save();
+      const body=seg.closest(".m-body");
+      if(seg.closest(".module").classList.contains("open")) body.style.maxHeight=body.scrollHeight+"px";
+    };
+    seg.addEventListener("click",toggle);
+    seg.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();toggle();}});
+  });
+
+  applyState();
+}
+
+function applyState(){
+  document.querySelectorAll(".seg").forEach(seg=>{
+    seg.setAttribute("aria-checked", state[seg.dataset.key]?"true":"false");
+  });
+  refresh();
+}
+
+function refresh(){
+  let doneModules=0;
+  MODULES.forEach((m,mi)=>{
+    const cnt=$("#count-"+mi);
+    if(cnt) cnt.textContent=`${segDone(mi)} / ${segTotal(mi)} parts read`;
+    m.readings.forEach((r,ri)=>{
+      const rp=$("#rprog-"+mi+"-"+ri);
+      if(rp){ rp.textContent=`${readingCount(mi,ri)}/${r.segs.length}`; rp.classList.toggle("full",readingDone(mi,ri)); }
+    });
+    const complete=moduleDone(mi);
+    const mod=$("#mod-"+mi); if(mod) mod.classList.toggle("complete",complete);
+    const mark=$("#mark-"+mi); if(mark) mark.classList.toggle("done",complete);
+    if(complete) doneModules++;
+  });
+  const allSeven=doneModules===7;
+  const em=$("#mark-7"); if(em) em.classList.toggle("done",allSeven);
+  const totalDone=doneModules+(allSeven?1:0);
+  $("#doneCount").textContent=totalDone;
+  $("#barFill").style.width=(totalDone/8*100)+"%";
+}
+
+/* ---- storage adapter: use Claude's artifact storage if present, else this browser's own localStorage (works when the file is downloaded and opened on your Mac) ---- */
+const STORE_KEY="progress";
+const CLAUDE_STORE=(typeof window!=="undefined" && window.storage && typeof window.storage.get==="function");
+async function storeGet(){
+  if(CLAUDE_STORE){ try{ const r=await window.storage.get(STORE_KEY); return (r&&r.value)?r.value:null; }catch(e){ return null; } }
+  try{ return localStorage.getItem(STORE_KEY); }catch(e){ return null; }
+}
+async function storeSet(v){
+  if(CLAUDE_STORE){ try{ await window.storage.set(STORE_KEY,v); }catch(e){} return; }
+  try{ localStorage.setItem(STORE_KEY,v); }catch(e){}
+}
+async function storeDel(){
+  if(CLAUDE_STORE){ try{ await window.storage.delete(STORE_KEY); }catch(e){} return; }
+  try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+}
+
+async function load(){
+  const v=await storeGet();
+  if(v){ try{ state=JSON.parse(v); }catch(e){ state={}; } }
+  loaded=true; applyState();
+}
+let flashTimer;
+async function save(){
+  if(!loaded) return;
+  await storeSet(JSON.stringify(state));
+  const f=$("#saveFlash"); f.classList.add("show");
+  clearTimeout(flashTimer); flashTimer=setTimeout(()=>f.classList.remove("show"),1200);
+}
+
+$("#resetBtn").addEventListener("click",async()=>{
+  state={};
+  document.querySelectorAll(".module.open").forEach(m=>{
+    m.classList.remove("open");
+    m.querySelector(".m-head").setAttribute("aria-expanded","false");
+    m.querySelector(".m-body").style.maxHeight="0";
+  });
+  applyState();
+  await storeDel();
+});
+
+render();
+load();
+</script>
+</body>
+</html>
